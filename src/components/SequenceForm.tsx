@@ -1,44 +1,118 @@
 // src/components/SequenceForm.tsx
-import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { TextField, Button, Box } from '@mui/material';
+import React from 'react'
+import { useForm, Controller } from 'react-hook-form'
+import Box from '@mui/material/Box'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
 
-type FormValues = { seq1: string; seq2: string };
+interface FormValues {
+  seqA: string
+  seqB: string
+}
 
-const VALID_CHARS = /^[ARNDCEQGHILKMFPSTWYV-]+$/i;
+interface Props {
+  onSubmit: (seqA: string, seqB: string) => void
+}
 
-export function SequenceForm({ onSubmit }: { onSubmit: (s1: string, s2: string) => void }) {
-  const { control, handleSubmit, watch, formState: { errors } } = useForm<FormValues>({
-    defaultValues: { seq1: '', seq2: '' }
-  });
-  const s1 = watch('seq1'), s2 = watch('seq2');
+const SequenceForm: React.FC<Props> = ({ onSubmit }) => {
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors, isValid },
+  } = useForm<FormValues>({
+    defaultValues: { seqA: '', seqB: '' },
+    mode: 'onChange',        // валидация
+    reValidateMode: 'onChange',
+  })
 
-  const sequencesEqualLength = s1.length === s2.length;
+  // сравнить длины полей
+  const valA = watch('seqA')
+  const valB = watch('seqB')
+
+  // регистронезависимо
+  const seqPattern = /^[ARNDCEQGHILKMFPSTWYV-]+$/i
+
+  const onSubmitForm = (data: FormValues) => {
+    // лишние пробелы по краям
+    onSubmit(data.seqA.trim(), data.seqB.trim())
+  }
 
   return (
-    <Box component="form" onSubmit={handleSubmit(data => onSubmit(data.seq1.toUpperCase(), data.seq2.toUpperCase()))} sx={{ mb: 2 }}>
+    <Box
+      component="form"
+      onSubmit={handleSubmit(onSubmitForm)}
+      sx={{ mb: 4 }}
+      noValidate
+    >
       <Controller
-        name="seq1" control={control}
+        name="seqA"
+        control={control}
         rules={{
-          required: 'Обязательное поле',
-          pattern: { value: VALID_CHARS, message: 'Недопустимые символы' }
+          required: 'Sequence A обязательно',
+          pattern: {
+            value: seqPattern,
+            message:
+              'Допустимы только буквы A,R,N,D,C,E,Q,G,H,I,L,K,M,F,P,S,T,W,Y,V и “-”',
+          },
+          validate: (value) =>
+            valB.length > 0 && value.length !== valB.length
+              ? 'Длина Sequence A должна совпадать с Sequence B'
+              : true,
         }}
-        render={({ field }) =>
-          <TextField {...field} label="Последовательность 1" fullWidth margin="normal"
-            error={!!errors.seq1} helperText={errors.seq1?.message} />}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Sequence A"
+            fullWidth
+            margin="normal"
+            multiline
+            rows={2}
+            error={!!errors.seqA}
+            helperText={errors.seqA?.message}
+          />
+        )}
       />
+
       <Controller
-        name="seq2" control={control}
+        name="seqB"
+        control={control}
         rules={{
-          required: 'Обязательное поле',
-          pattern: { value: VALID_CHARS, message: 'Недопустимые символы' },
-          validate: value => value.length === s1.length || 'Длины должны совпадать'
+          required: 'Sequence B обязательно',
+          pattern: {
+            value: seqPattern,
+            message:
+              'Допустимы только буквы A,R,N,D,C,E,Q,G,H,I,L,K,M,F,P,S,T,W,Y,V и “-”',
+          },
+          validate: (value) =>
+            valA.length > 0 && value.length !== valA.length
+              ? 'Длина Sequence B должна совпадать с Sequence A'
+              : true,
         }}
-        render={({ field }) =>
-          <TextField {...field} label="Последовательность 2" fullWidth margin="normal"
-            error={!!errors.seq2} helperText={errors.seq2?.message} />}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Sequence B"
+            fullWidth
+            margin="normal"
+            multiline
+            rows={2}
+            error={!!errors.seqB}
+            helperText={errors.seqB?.message}
+          />
+        )}
       />
-      <Button type="submit" variant="contained" disabled={!sequencesEqualLength}>Выровнять</Button>
+
+      <Button
+        type="submit"
+        variant="contained"
+        sx={{ mt: 2 }}
+        disabled={!isValid}
+      >
+        Align
+      </Button>
     </Box>
-  );
+  )
 }
+
+export default SequenceForm
