@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/biocad/static/js/main.aca51a2e.js",
+    "index.html": "/biocad/index.html",
+    "main.aca51a2e.js.map": "/biocad/static/js/main.aca51a2e.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.aca51a2e.js"
+  ]
+}
