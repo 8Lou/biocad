@@ -109,7 +109,7 @@ const SequenceForm: React.FC<Props> = ({ onSubmit }) => {
         sx={{ m: 2 }}
         disabled={!isValid}
       >
-        Выравнить
+        выровнять
       </Button>
     </Box>
   )
