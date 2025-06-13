@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
 
 import SequenceForm from './components/SequenceForm';
-import {AlignmentView} from './components/AlignmentView';
+import { AlignmentView } from './components/AlignmentView';
 import { alignSequences, AlignmentResult } from './utils/align';
 import { COLOR_MAP } from './constants/colorMap';
 
@@ -24,9 +24,20 @@ const App: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Alignment Tool
+    <Container maxWidth="md" sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: '100vh',
+      px: 2,
+    }}>
+      <Typography variant="h4" component="h1" gutterBottom
+        sx={{
+          color: 'rgb(8, 78, 181)',
+          p: 2, textAlign: 'center'
+        }} >
+        Выравнивания аминокислотных последовательностей
       </Typography>
       <SequenceForm onSubmit={onSubmit} />
       {result && <AlignmentView alignedA={result.alignedA} alignedB={result.alignedB} colorMap={COLOR_MAP} />}

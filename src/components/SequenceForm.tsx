@@ -42,14 +42,14 @@ const SequenceForm: React.FC<Props> = ({ onSubmit }) => {
     <Box
       component="form"
       onSubmit={handleSubmit(onSubmitForm)}
-      sx={{ mb: 4 }}
+      sx={{ mb: 4, textAlign: 'center' }}
       noValidate
     >
       <Controller
         name="seqA"
         control={control}
         rules={{
-          required: 'Sequence A обязательно',
+          required: 'Последовательность "A" обязательно',
           pattern: {
             value: seqPattern,
             message:
@@ -57,13 +57,13 @@ const SequenceForm: React.FC<Props> = ({ onSubmit }) => {
           },
           validate: (value) =>
             valB.length > 0 && value.length !== valB.length
-              ? 'Длина Sequence A должна совпадать с Sequence B'
+              ? 'Длина Последовательности "A" должна совпадать с Последовательностью "B"'
               : true,
         }}
         render={({ field }) => (
           <TextField
             {...field}
-            label="Sequence A"
+            label="Последовательность A"
             fullWidth
             margin="normal"
             multiline
@@ -78,7 +78,7 @@ const SequenceForm: React.FC<Props> = ({ onSubmit }) => {
         name="seqB"
         control={control}
         rules={{
-          required: 'Sequence B обязательно',
+          required: 'Последовательность "B" обязательна',
           pattern: {
             value: seqPattern,
             message:
@@ -86,13 +86,13 @@ const SequenceForm: React.FC<Props> = ({ onSubmit }) => {
           },
           validate: (value) =>
             valA.length > 0 && value.length !== valA.length
-              ? 'Длина Sequence B должна совпадать с Sequence A'
+              ? 'Длина Последовательности "B" должна совпадать с Последовательностью "A"'
               : true,
         }}
         render={({ field }) => (
           <TextField
             {...field}
-            label="Sequence B"
+            label="Последовательность B"
             fullWidth
             margin="normal"
             multiline
@@ -106,10 +106,10 @@ const SequenceForm: React.FC<Props> = ({ onSubmit }) => {
       <Button
         type="submit"
         variant="contained"
-        sx={{ mt: 2 }}
+        sx={{ m: 2 }}
         disabled={!isValid}
       >
-        Align
+        Выравнить
       </Button>
     </Box>
   )

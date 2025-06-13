@@ -22,7 +22,13 @@ export const AlignmentView: React.FC<Props> = ({ alignedA, alignedB, colorMap })
   const charsB = alignedB.split('')
 
   return (
-    <Box>
+    <Box     sx={{
+      borderRadius: 1,
+      p: 3,
+      maxWidth: '100%',
+      overflowX: 'auto',
+      backgroundColor: 'rgba(189, 211, 244, 0.5)',
+    }}>
       <Line>
         {charsA.map((ch, i) => (
           <span
